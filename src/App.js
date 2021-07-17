@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./App.css";
 import { getLanguages, translate } from "./api/index";
 
@@ -7,6 +7,7 @@ import SwapHorizRoundedIcon from "@material-ui/icons/SwapHorizRounded";
 import FileCopyRoundedIcon from "@material-ui/icons/FileCopyRounded";
 import DeleteOutlineRoundedIcon from "@material-ui/icons/DeleteOutlineRounded";
 import VolumeUpRoundedIcon from "@material-ui/icons/VolumeUpRounded";
+import TranslateRoundedIcon from "@material-ui/icons/TranslateRounded";
 
 function App() {
     const [languages, setLanguages] = useState([
@@ -15,13 +16,17 @@ function App() {
         { language: "es", name: "espanish" },
     ]);
     const [sourceLan, setSourceLan] = useState("en");
-    const [targetLan, setTargetLan] = useState("fa");
+    const [targetLan, setTargetLan] = useState("en");
     const [text, setText] = useState("");
     const [translatedText, setTranslatedText] = useState("");
 
+    const sourceSelectRef = useRef(null);
+    const targetSelectRef = useRef(null);
+
     const fetchTranslatedText = async () => {
-        const data = await translate(sourceLan, targetLan, "hello baby");
+        const data = await translate(sourceLan, targetLan, text);
         console.log(data);
+        setTranslatedText(data);
         // console.log(translatedText);
     };
 
@@ -31,8 +36,28 @@ function App() {
         console.log(languages);
     };
 
+    const swapLanguages = (val1, val2) => {
+        const t = val1;
+        setSourceLan(val2);
+        setTargetLan(t);
+
+        for (let i, j = 0; (i = sourceSelectRef.current.options[j]); j++) {
+            if (i.value === targetLan) {
+                sourceSelectRef.current.selectedIndex = j;
+                break;
+            }
+        }
+
+        for (let i, j = 0; (i = targetSelectRef.current.options[j]); j++) {
+            if (i.value === sourceLan) {
+                targetSelectRef.current.selectedIndex = j;
+                break;
+            }
+        }
+    };
+
     useEffect(() => {
-        // fetchLanguages();
+        fetchLanguages();
     }, []);
 
     return (
@@ -43,6 +68,7 @@ function App() {
                         <select
                             onChange={(e) => setSourceLan(e.target.value)}
                             className="lan__select source-lan"
+                            ref={sourceSelectRef}
                         >
                             {languages?.map((language, index) => {
                                 return (
@@ -59,13 +85,18 @@ function App() {
                     </div>
 
                     <div className="header__swap">
-                        <SwapHorizRoundedIcon className="swap-icon" />
+                        <IconButton
+                            onClick={() => swapLanguages(sourceLan, targetLan)}
+                        >
+                            <SwapHorizRoundedIcon className="swap-icon" />
+                        </IconButton>
                     </div>
 
                     <div className="target-lan__wrapper">
                         <select
                             onChange={(e) => setTargetLan(e.target.value)}
                             className="lan__select target-lan"
+                            ref={targetSelectRef}
                         >
                             {languages.map((language, index) => {
                                 return (
@@ -93,16 +124,29 @@ function App() {
                         ></textarea>
 
                         <div className="box__footer">
-                            <IconButton onClick={() => setText("")}>
+                            <IconButton
+                                onClick={() => setText("")}
+                                title="Clear"
+                            >
                                 <DeleteOutlineRoundedIcon className="footer-icon" />
                             </IconButton>
                             <IconButton
                                 onClick={() =>
                                     navigator.clipboard.writeText(text)
                                 }
+                                title="Copy"
                             >
                                 <FileCopyRoundedIcon className="footer-icon" />
                             </IconButton>
+
+                            {text && (
+                                <IconButton
+                                    onClick={() => fetchTranslatedText()}
+                                    title="Translate"
+                                >
+                                    <TranslateRoundedIcon className="footer-icon" />
+                                </IconButton>
+                            )}
                         </div>
                     </div>
 
@@ -117,15 +161,17 @@ function App() {
                                             "This option will be here soon :)"
                                         )
                                     }
+                                    title="Read Result"
                                 >
                                     <VolumeUpRoundedIcon className="footer-icon" />
                                 </IconButton>
                                 <IconButton
                                     onClick={() =>
                                         navigator.clipboard.writeText(
-                                            "translated Text"
+                                            translatedText
                                         )
                                     }
+                                    title="Copy"
                                 >
                                     <FileCopyRoundedIcon className="footer-icon" />
                                 </IconButton>

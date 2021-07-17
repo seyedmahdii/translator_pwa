@@ -1,24 +1,31 @@
 import axios from "axios";
-import dotenv from "dotenv";
 
 export const translate = async (from, to, text) => {
-    dotenv.config();
-
-    const options = {
-        method: "POST",
-        url: "https://deep-translate1.p.rapidapi.com/language/translate/v2",
-        headers: {
-            "content-type": "application/json",
-            "x-rapidapi-key": process.env.RAPIDAPI_KEY,
-            "x-rapidapi-host": "deep-translate1.p.rapidapi.com",
+    var options = {
+        method: "GET",
+        url: "https://translated-mymemory---translation-memory.p.rapidapi.com/api/get",
+        params: {
+            q: text,
+            langpair: `${from}|${to}`,
+            de: "a@b.c",
+            onlyprivate: "0",
+            mt: "1",
         },
-        data: { q: text, source: from, target: to },
+        headers: {
+            "x-rapidapi-key": process.env.REACT_APP_RAPIDAPI_KEY,
+            "x-rapidapi-host":
+                "translated-mymemory---translation-memory.p.rapidapi.com",
+        },
     };
 
     try {
-        const { data } = await axios.request(options);
-        console.log(data);
-        return data;
+        const {
+            data: {
+                responseData: { translatedText },
+            },
+        } = await axios.request(options);
+        console.log(translatedText);
+        return translatedText;
     } catch (error) {
         console.log(error);
     }
@@ -29,7 +36,7 @@ export const getLanguages = async () => {
         method: "GET",
         url: "https://deep-translate1.p.rapidapi.com/language/translate/v2/languages",
         headers: {
-            "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+            "x-rapidapi-key": process.env.REACT_APP_RAPIDAPI_KEY,
             "x-rapidapi-host": "deep-translate1.p.rapidapi.com",
         },
     };

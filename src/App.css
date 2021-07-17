@@ -74,7 +74,8 @@ button {
     color: var(--text-color);
 }
 .swap-icon {
-    font-size: 2.5rem !important;
+    font-size: 2rem !important;
+    color: white;
 }
 
 .body {
@@ -113,5 +114,8 @@ button {
 @media all and (min-width: 735px) {
     .lan__select {
         width: 140px;
+    }
+    .swap-icon {
+        font-size: 2.3rem !important;
     }
 }
