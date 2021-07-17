@@ -12,8 +12,7 @@ export const translate = async (from, to, text) => {
             mt: "1",
         },
         headers: {
-            "x-rapidapi-key":
-                "582385dcdamshe93967ba0316e1ap116a42jsnf4290f1aeafb",
+            "x-rapidapi-key": process.env.RAPIDAPI_KEY,
             "x-rapidapi-host":
                 "translated-mymemory---translation-memory.p.rapidapi.com",
         },
@@ -37,7 +36,7 @@ export const getLanguages = async () => {
         method: "GET",
         url: "https://deep-translate1.p.rapidapi.com/language/translate/v2/languages",
         headers: {
-            "x-rapidapi-key": process.env.REACT_APP_RAPIDAPI_KEY,
+            "x-rapidapi-key": process.env.RAPIDAPI_KEY,
             "x-rapidapi-host": "deep-translate1.p.rapidapi.com",
         },
     };

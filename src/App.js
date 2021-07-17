@@ -10,11 +10,7 @@ import VolumeUpRoundedIcon from "@material-ui/icons/VolumeUpRounded";
 import TranslateRoundedIcon from "@material-ui/icons/TranslateRounded";
 
 function App() {
-    const [languages, setLanguages] = useState([
-        { language: "en", name: "english" },
-        { language: "fa", name: "farsi" },
-        { language: "es", name: "espanish" },
-    ]);
+    const [languages, setLanguages] = useState();
     const [sourceLan, setSourceLan] = useState("en");
     const [targetLan, setTargetLan] = useState("en");
     const [text, setText] = useState("");
@@ -57,7 +53,7 @@ function App() {
     };
 
     useEffect(() => {
-        // fetchLanguages();
+        fetchLanguages();
     }, []);
 
     return (
