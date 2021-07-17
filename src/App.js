@@ -57,7 +57,7 @@ function App() {
     };
 
     useEffect(() => {
-        fetchLanguages();
+        // fetchLanguages();
     }, []);
 
     return (

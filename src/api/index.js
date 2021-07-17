@@ -12,7 +12,8 @@ export const translate = async (from, to, text) => {
             mt: "1",
         },
         headers: {
-            "x-rapidapi-key": process.env.REACT_APP_RAPIDAPI_KEY,
+            "x-rapidapi-key":
+                "582385dcdamshe93967ba0316e1ap116a42jsnf4290f1aeafb",
             "x-rapidapi-host":
                 "translated-mymemory---translation-memory.p.rapidapi.com",
         },
